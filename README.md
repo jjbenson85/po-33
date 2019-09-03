@@ -1,4 +1,28 @@
-# P0-33
+# Personal Project - P0-33: Music Sequencer
+
+#### Project Members:
+- [James Benson](https://github.com/jjbenson85)
+
+#### Timeframe:
+21 days
+
+## Technologies used
+* HTML
+* CSS
+* JavaScript / jQuery / Tone.js
+
+## Installation
+1. Clone or download the repo
+1. ```npx serve```
+1. Open your local host on port 5000
+
+### Po-33: Drum Machine and Melodic Sequencer
+![image](https://user-images.githubusercontent.com/34242042/64187853-3b1aa280-ce69-11e9-8d52-31c8f9daf53a.png)
+
+You can find a hosted version here ----> [Live Site](http://jjbenson.co.uk/po-33/)
+
+
+### Project overview
 
 This project was created as part of the pre-work for the General Assembly Web Development Immersive course.
 
@@ -10,20 +34,7 @@ It is a clone of the Teenage Engineering Pocket Operator 33 Knock Out!
 
 [PO-33 Introduction Video](https://www.youtube.com/watch?v=T1841FR_eE8&vl=en)
 
-![image](https://user-images.githubusercontent.com/34242042/64187853-3b1aa280-ce69-11e9-8d52-31c8f9daf53a.png)
-
 I aim to update this project to use better techniques and make it easier to use!
-
-
-## Setup
-
-I run this locally by using [serve](https://www.npmjs.com/package/serve)
-
-Download and navigate to the folder then run the command
-
-```npx serve```
-
-
 
 ## Things that work!
 

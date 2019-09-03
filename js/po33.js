@@ -168,7 +168,7 @@ for (var i = 0; i <CHANNELS;i++ ){
 
 	}
 }*/
-//var meter = new Tone.Meter (0.01);
+var meter = new Tone.Meter (0.01);
 
 const MELODIC_CHANNELS = 8;
 var melodicArr = new Array (MELODIC_CHANNELS);
@@ -181,11 +181,10 @@ for (var i = 0; i <MELODIC_CHANNELS-4;i++ ){
 	})
 
 	melodicFilterArr[i] = new Tone.Filter(20, "highpass");
-	melodicFilterArr[i].toMaster();
+	// melodicFilterArr[i].toMaster();
+	melodicFilterArr[i].chain(meter, Tone.Master);
 	melodicArr[i].connect(melodicFilterArr[i]);
 }
-
-
 
 const DRUM_CHANNELS = 8;
 var drumArr = new Array (DRUM_CHANNELS);
@@ -193,7 +192,8 @@ var drumFilterArr = new Array (DRUM_CHANNELS);
 for (var i = 0; i <DRUM_CHANNELS-4;i++ ){
 	var x= i+9;
 	drumFilterArr[i]  = new Tone.Filter(20, "highpass");
-	drumFilterArr[i].toMaster();
+	// drumFilterArr[i].toMaster();
+	drumFilterArr[i].chain(meter, Tone.Master);
 	drumArr[i]= new Tone.Players({
 			"G#4" : "wav/sound-"+x+"-1.wav",
 			"A4" :"wav/sound-"+x+"-2.wav",
@@ -253,15 +253,12 @@ var keys = new Tone.Players({
 
 		//TONE.JS SEQUENCE USED TO LOOP AND TRIGGER EVENTS ACCURATELY
 		var loop = new Tone.Sequence(function(time, beat){
-			console.log('beat')
 			beatCount = beat;
 			updateDisplay();
 			$("#beatCount").html(beatCount);
 
-
 			for(i=0;i<MELODIC_CHANNELS;i++){
 				var thisChannel = newChannelArr[i][currentPattern][beat];
-
 
 					if(thisChannel.noteOn==1){
 						var chanSettings = channelSettingsArr[i];
@@ -288,20 +285,7 @@ var keys = new Tone.Players({
 						var duration = sampleLength*length;
 						var offset = sampleLength*trim;
 
-						/*for(j=0;j<96;j++){
-							 if (melodicArr[i].buffers.has(j)){
-							 	console.log("HAS: "+j);
-							 }
-						}*/
-
-
-						/*console.log("sampleLength:"+sampleLength);
-						console.log("Offset:"+offset);
-						console.log("duration:"+duration);
-						console.log("pitch:"+pitch);*/
-
 						thisSampler.volume.value = vol;
-						//melodicArr[i].triggerAttack(noteArray[thisPitch],time);
 						thisSampler.triggerAttackExt(noteArray[pitch],time,1,offset,duration);
 					}
 
@@ -332,12 +316,6 @@ var keys = new Tone.Players({
 						var duration = thisChannel.fxLength;
 						var pitch = thisChannel.fxPitch;
 						var gain = thisChannel.fxVolume;
-						//console.log("Offset:"+offset);
-						//console.log("duration:"+duration);
-						//console.log("pitch:"+pitch);
-						//console.log("gain:"+gain);
-
-
 
 						thisSampler.get(noteArray[thisPitch]).start(time, offset, duration, pitch, gain);
 					}
@@ -361,26 +339,18 @@ var keys = new Tone.Players({
 		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
 
-	/*
 var levelMeterFunction = function(){
-	var level = meter.getLevel();
-	//console.log(level);
+	const level = meter.getLevel();
+	!segmentDisplayLock && updateLevelMeter(0, level+18);
 
-	//var x = Math.max(0, level);
-
-	//var y = 32-(Math.floor(x));
-
-	//updateSegmentDisplay(0,);
-	updateLevelMeter(0,level);
-
-	setTimeout(levelMeterFunction,200);
+	setTimeout(levelMeterFunction,20);
 
 }
 
 
 
 
-setTimeout(levelMeterFunction,100);*/
+setTimeout(levelMeterFunction,100);
 
 //OBJECT CONTAINING EACH BEATS SETTINGS
 function Beat(){
@@ -415,7 +385,6 @@ for (var i = 0; i <newChannelArr.length;i++ ){
 var loadDefault = function(){
 		//LOAD DEAFULT PATTERNS AND INSERT DATA INTO CHANNEL ARRAY
 		 $.getJSON("json/default.json", function( data ) {
-		//    console.log(data);
 		 	for(pattern in data){
 			 	for (channel in data[pattern]){
 					for(i=0;i<16;i++){
@@ -439,71 +408,9 @@ var loadDefault = function(){
 					}
 				}
 			}
-			//var myJSON = JSON.stringify(newChannelArr, null, "  ");
- 			//console.log(myJSON);
 	});
 }
 loadDefault();
-/*
- //console.log(newChannelArr);
- var myJSON = JSON.stringify(newChannelArr, null, "  ");
- //console.log(myJSON);
-localStorage.setItem("po33_settings", myJSON);
-
-	*/
-// console.log(tempArray);
-
-
-//  var loadDefault = function(){
-//    console.log('HERE!!!',newChannelArr);
-
-//  	$.getJSON("json/default_4.json", function( data ) {
-//  		newChannelArr = data;
-//  		console.log('HERE',newChannelArr);
-//  		 var myJSON = JSON.stringify(newChannelArr, null, "  ");
-// 		localStorage.setItem("po33_settings", myJSON);
-//  	});
-// }
-// console.log('newChannelArr',newChannelArr)
-
-// loadDefault();
-
-
-// var tempText = localStorage.getItem("po33_settings");
-// var tempArray = JSON.parse(tempText);
-
-
-// if(tempText=="null"){
-// 	loadDefault();
-
-// }else{
-// 	console.log("load local");
-// 	newChannelArr = JSON.parse(tempText);
-// 	console.log(newChannelArr);
-/*
-	for(pattern in data){
-		for (channel in data[pattern]){
-			for(i=0;i<16;i++){
-
-				if(newChannelArr[channel][pattern][i].noteOn == 1){
-					console.log(channel +":"+ pattern+":"+i);
-				}
-				/*
-				var channelObj = newChannelArr[channel][pattern][i];
-						var dataObj = data[pattern][channel][i];
-						channelObj.noteOn = dataObj.noteOn;
-						channelObj.notePitch =  dataObj.pitch;
-						channelObj.fxVolume =  dataObj.volume;
-						* /
-			}
-		}
-	}
-
-	newChannelArr = JSON.parse(tempText);*/
-
-	//console.log(newChannelArr[1][0][0]);*/
-
-// }
 
 
 //CURRENT CHANNEL SETTINGS USED FOR LIVE PLAY BACK AND ADDING NOTES
@@ -668,9 +575,6 @@ var segmentDisplayLockFunc = function(){
 
   //FUNCTION CALLED BY BUTTON AND KEYBOARD
   var fxButtonFunction = function(){
-
-//	console.log("fxMode:"+fxMode);
-
 	var mod;
 	play ? mod=2:mod=3;
 
@@ -702,7 +606,6 @@ var allowSound = function(){
 
 //PLAY BUTTON
   $("#btnPlay").click(function() {
-	  console.log('"#btnPlay"')
    playButtonFunction();
   });
 
@@ -722,10 +625,7 @@ var playButtonFunction = function(){
     }else{
     	play = true;
 		Tone.Transport.start();
-		console.log('here', Tone.Transport)
     	loop.start();
-    	//startTimer();
-    	//myTimer();
     }
 }
 var btnWriteMouseUpTimer;
@@ -736,7 +636,6 @@ var btnWriteHold = false;
 $("#btnWrite").mousedown(function() {
 	btnWriteHold = false;
 	btnWriteMouseUpTimer = setTimeout(function(){
-		console.log("holdLock");
 		btnWriteHold = true;
 	},3000)
   });
@@ -782,19 +681,11 @@ $("#btnWrite").mouseup(function() {
   			view=3;
   			break;
   	}
-
-
-
-
-	//if(view==3)view=33;
 	$('#currentMode').html(mode);
-	console.log("mode: "+mode);
 	updateDisplay();
 	updateSegmentDisplay(value);
 	screenTimeOut();
   }
-
-
 
 //PLAYER PLAY SOUND FOR LIVE PLAYBACK
 var playSound = function(channel,pitch){
@@ -803,17 +694,12 @@ var playSound = function(channel,pitch){
 	var filterFreq = chan.fxFilterFreq;
 	var filterType = chan.fxFilterType;
 	var filterRes = chan.fxFilterRes
-	console.log("filterFreq:"+filterFreq);
-
-
 
 	if(channel<MELODIC_CHANNELS){
 
 		melodicFilterArr[channel].frequency.value = filterFreq;
 		melodicFilterArr[channel].type = filterType;
 		melodicFilterArr[channel].Q.value = filterRes;
-		console.log("filterType:"+filterType);
-
 		melodicArr[channel].volume.value = vol;
 
 		melodicArr[channel].releaseAll();
@@ -824,25 +710,14 @@ var playSound = function(channel,pitch){
 		drumFilterArr[channel-8].type = filterType;
 		drumFilterArr[channel-8].Q.value = filterRes;
 
-
-		//drumArr[channel-8].get(noteArray[pitch]).start();
-		console.log(channel-8 +" : "+noteArray[pitch]);
-
 		var trim = chan.fxTrim;
 		var length = chan.fxLength;
 		var fxPitch = chan.fxPitch;
-		//var gain = chan.fx/1000;
-		console.log("Offset:"+offset);
-		console.log("duration:"+duration);
-		console.log("pitch:"+pitch);
-		//console.log("gain:"+gain);
 
 		drumArr[channel-8].volume.value = vol;
 
 		var sampleLength = drumArr[channel-8].get(noteArray[pitch]).buffer.duration;;
 		var duration = (sampleLength/1000)*length;
-
-		console.log("sampleLength:"+sampleLength);
 
 		var offset = (sampleLength/1000)*trim;
 
@@ -851,59 +726,6 @@ var playSound = function(channel,pitch){
 	}
 
 }
-
-//PLAY SOUND USING CHANNEL SETTINGS OR BEAT SETTINGS
-/*var playSound = function(channel,pitch){
-
-	var myObj = newChannelArr[channel][currentPattern][beatCount];
-	var myAudio = newAudioArr[channel][pitch][0];
-
-	//IF THIS AUDIO OBJECT IS ALREADY PLAYING, SELECT THE NEXT ONE
-	if(!myAudio.paused){
-		//APPLY FADE OUT HERE
-		//myAudio.pause();
-
-		//SELECT
-		 myAudio = newAudioArr[channel][pitch][1];
-	}
-
-	//SET PITCH
-	myAudio.playbackRate = 1;
-	if(channel<8){
-		myAudio.playbackRate = pitchArr[pitch];//+myObj.fxPitch;
-	}
-
-	if(play){
-		//VOLUME
-		myAudio.volume = (myObj.fxVolume)*(mainVolume);
-
-		//SAMPLE START
-		//myAudio.currentTime = myObj.fxTrim;
-		myAudio.currentTime = 0;
-
-
-		//SAMPLE LENGTH
-		//clearTimeout(sampleLengthTimer[channel]);
-		//sampleLengthTimer[channel] = setTimeout(function() {audioArr[channel].pause();},myObj.fxLength);
-
-	}else{
-		//VOLUME
-		myAudio.volume = (channelSettingsArr[channel].fxVolume)*(mainVolume);
-
-		//SAMPLE START
-		//myAudio.currentTime = channelSettingsArr[channel].fxTrim;
-		myAudio.currentTime = 0;
-
-
-		//SAMPLE LENGTH
-		//clearTimeout(sampleLengthTimer[channel]);
-		//sampleLengthTimer[channel] = setTimeout(function() {audioArr[channel].pause();},myObj.fxLength);
-
-	}
-
-	myAudio.play();
-
-}*/
 
 //EDIT PATTERN
 var editPattern = function(channel,beat){
@@ -986,9 +808,6 @@ var updateDisplay = function(){
 				//IF NOT PLAYING SHOW CLOCK
 				showClock();
 			}
-
-
-
 			break;
 
 		case 1://EDIT
@@ -1001,11 +820,6 @@ var updateDisplay = function(){
 						ledArr[i].addClass("ledOnFull");
 					}
 				}
-
-
-
-				//console.log(newChannelArr[selectedChannel][currentPattern][i].notePitch);
-				//console.log(channelSettingsArr[selectedChannel].notePitch);
 			}
 
 			//IF PLAYING FLASH PLAY BUTTON LED
@@ -1036,11 +850,6 @@ var updateDisplay = function(){
 		case 11:
 			//ADD HOLD DECORATION
   			 $("#btnWrite > .gridHover").addClass("buttonHold");
-
-
-
-
-  			 console.log("11")
 			break;
 
 		case 2://SOUND
@@ -1226,11 +1035,7 @@ var buttonFunction = function(buttonNumber){
 					//SET CURRENT PATTERN TO BUTTON NUMBER
 				currentPattern = btnNum;
 				}
-
-
 			}
-
-
 
 			//ADD PATTERN TO PATTERN CHAIN
 			patternChain.push(btnNum);
@@ -1365,246 +1170,6 @@ var changeState = function(newState){
   	//$('#selectedChannelDisp').html(selectedChannel);
 }
 
-/*
-
-//PER BEAT
-var beatFunction = function(){
-	playBeatSound();
-	updateDisplay();
-	$("#beatCount").html(beatCount);
-	increaseBeat();
-
-}
-
-var playBeatSound = function(){
-	////CHECK IF SOUND SHOULD PLAY
-	for(i=0;i<CHANNELS;i++){
-		if(newChannelArr[i][currentPattern][beatCount].noteOn==1){
-
-			//playSound(i,-1);
-			var pitch = newChannelArr[i][currentPattern][beatCount].notePitch;
-			//pitch--;
-			playSound(i,pitch);
-		}
-		/*if(channelArr[i][currentPattern][beatCount]==1){
-		 	playSound(i,1);
-		}* /
-	}
-}*/
-
-
-/*
-var increaseBeat = function(){
-	beatCount++;
-	//$("#btnPlayLED").removeClass("ledOnFull");
-	if(beatCount>=16){
-		beatCount=0;
-		patternCount++;
-	}
-	if(patternCount>patternChain.length-1){ patternCount = 0;}
-	currentPattern = patternChain[patternCount];
-	/*if((beatCount%4)==1){
-		$("#btnPlayLED").addClass("ledOnFull");
-		console.log("addClass:"+ $("#btnPlayLED"));
-	}* /
-}*/
-//$("#btnPlayLED").addClass("ledOnFull");
-
-
-/*
-//TIMER
-var tempoInterval = 15000/(tempo);
-var swingInterval = (tempoInterval/100)*swing;
-
-var expected = tempoInterval+swingInterval;
-var interval = tempoInterval+swingInterval;
-var error = 0;
-var seconds = new Date().getTime();
-//var last = seconds;
-
-
-//START TIMER USED AS WE DON'T KNOW WHEN THE EXPECTED TIME SHOULD BE
-var startTimer = function(){
-	beatFunction();
-	//updateDisplay();
-	//increaseBeat();
-
-	var now = new Date().getTime();
-	interval = tempoInterval;
-	expected = now+interval+swingInterval;
-	error = 0;
-	setTimeout(offBeatTimer,interval);
-
-}
-*/
-
-/*var myTimer = function(){
-	if(play){
-		var now = new Date().getTime();
-	    error = now-expected;
-	    //last = now;
-	    timer.innerHTML = "timer: "+ (now - seconds);
-	    errorDisp.innerHTML = "error: "+error;
-	    //tempoInterval is perfect interval
-	    expected = now+tempoInterval;
-	    //interval is corrected
-	    interval = Math.max(0,interval-error);
-	    intervalDisp.innerHTML = "interval:"+interval;
-	    beatFunction();
-	    setTimeout(myTimer,interval);
-	}
-}*/
-
-/*
-var fadeOutAudio = function(fadeTime){
-	var nextBeat = (beatCount+1)%16;
-	console.log(beatCount+" : "+nextBeat);
-	for(i=0;i<16;i++){
-
-		console.log(i);
-		console.log(newChannelArr[i][currentPattern][nextBeat].noteOn==1);
-		if((audioArr[i].paused==false)){
-			if(audioArr[i].isFadeOut==false){
-				fadeTime = fadeTime*-1;
-				$("#audio"+i).animate({
-					volume: 0
-				}, fadeTime,"easeInSine", function() {
-					console.log("fadeOut Complete");
-				});
-			//$("audio").eq(i).animate({volume: 0}, 10);
-				audioArr[i].isFadeOut=true;
-				console.log("fadeOutAudio:"+fadeTime);
-			}else{
-				console.log("already fading out");
-
-			}
-		}
-	}
-}
-*/
-//var preTime = 20;
-
-/*
-var onBeatTimer = function(){
-	if(play){
-		var now = new Date().getTime();
-
-	    error = now-expected-preTime;
-
-	    if(error<0){
-			 setTimeout(offBeatTimer,1);
-			 console.log("A wait:"+error);
-		}else{
-		    console.log("A error:"+error);
-
-		   // last = now;
-		    timer.innerHTML = "timer: "+ (now - seconds);
-		    errorDisp.innerHTML = "error: "+error;
-		    expected = now+tempoInterval+swingInterval;
-		    expected -= preTime;
-		    interval = Math.max(0,interval-error);
-		    intervalDisp.innerHTML = interval;
-		    beatFunction();
-		    setTimeout(offBeatTimer,interval);
-		}
-
-	}
-}
-
-
-
-var offBeatTimer = function(){
-	if(play){
-		var now = new Date().getTime();
-		error = now-expected-preTime;
-
-		if(error<0){
-			 setTimeout(offBeatTimer,1);
-			 console.log("B wait:"+error);
-		}else{
-
-
-		    //error = now-expected;
-		    console.log("B error:"+error);
-		    //last = now;
-		    timer.innerHTML = "timer: "+ (now - seconds);
-		    errorDisp.innerHTML = "error: "+error;
-		    expected = now+tempoInterval-swingInterval;
-		    expected -= preTime;
-
-		    interval = Math.max(0,interval-error);
-		    intervalDisp.innerHTML = interval;
-		    beatFunction();
-		    setTimeout(onBeatTimer,interval);
-	    }
-	}
-}*/
-/*
-var onBeatTimer = function(){
- 	//console.log("tempoInterval:"+tempoInterval);
-
-	if(play){
-		var now = new Date().getTime();
-
-	    error = now-expected;
-
-	    if(error<-2){
-	    	//fadeOutAudio(error);
-			 setTimeout(onBeatTimer,5);
-			 //console.log("A wait:"+error);
-		}else{
-		    //console.log("A error:"+error);
-
-		   // last = now;
-		    timer.innerHTML = "timer: "+ (now - seconds);
-		    errorDisp.innerHTML = "error: "+error;
-		    interval = tempoInterval+swingInterval
-		    expected = now+interval;
-		    //expected -= preTime;
-		   // interval = Math.max(0,interval-error);
-		    intervalDisp.innerHTML = interval;
-		    beatFunction();
-		    setTimeout(offBeatTimer,interval-preTime);
-		}
-
-	}
-}
-
-
-
-var offBeatTimer = function(){
-	if(play){
-		var now = new Date().getTime();
-		error = now-expected-preTime;
-
-		if(error<-2){
-	    	//fadeOutAudio(error);
-			setTimeout(offBeatTimer,5);
-		}else{
-
-
-		    //error = now-expected;
-		    //last = now;
-		    timer.innerHTML = "timer: "+ (now - seconds);
-		    errorDisp.innerHTML = "error: "+error;
-
-		    interval = tempoInterval-swingInterval
-		    expected = now+interval;
-		    //expected -= preTime;
-
-
-		   // interval = Math.max(0,interval-error);
- 			//console.log("OFF tempoInterval:"+tempoInterval);
-
-		    intervalDisp.innerHTML = interval;
-		    beatFunction();
-		    setTimeout(onBeatTimer,interval-preTime);
-	    }
-	}
-}
-*/
-
-
 var dial1Value =0
 var dial2Value =0;
 
@@ -1680,22 +1245,13 @@ var updateLevelMeter = function(meterMode, level, length){
 			var _start =  Math.round(level);
 			var _length = Math.round(length);
 
-
-				//lmsArr[16].show();
-				//_start = level;
-				//_length = length;
-				console.log("_length:"+_length);
-
-
-
 				for (i=_start;i<1+_length+_start;i++) {
 					try{
-					lmsArr[i].css("opacity","1");
+						lmsArr[i].css("opacity","1");
 
 					}catch(err){
 
 					}
-					//lmsArr[16-i].show();
 				}
 
 
@@ -1783,8 +1339,6 @@ $('#dial1').draggable({
   		dialFunction(1);
   		dialLock=1;
   	}
-
-
   }
 });
 
@@ -1837,10 +1391,7 @@ var dialFunction = function(dialNumber){
 	}
 	if(view==4){//BPM
 		if(dialNumber==1){
-			 //
 			 	swing = dial1Value;
-
-			 	console.log(swing);
 			 	Tone.Transport.swing = swing/1000;				//swingInterval = (tempoInterval/256)*swing;
 
 				var x = Math.floor(dial1Value/31.25)
@@ -1922,15 +1473,7 @@ var dialFunction = function(dialNumber){
 
 
 					if(dial1Value<475){
-
-
-						 var filterFreq = Math.exp(minv + scale*(dial1Value-minp));
-
-
-						//console.log("logValue: " + logValue);
-
-
-
+						var filterFreq = Math.exp(minv + scale*(dial1Value-minp));
 						var value = "LPF";
 						var filtType = "lowpass";
 						//var filterFreq = (dial1Value*25.2)+20;//0-450 = 20 - 20,000
@@ -1958,10 +1501,7 @@ var dialFunction = function(dialNumber){
 						updateLevelMeter(levelMeterType,0);
 					}
 
-					console.log(filterFreq);
 					updateSegmentDisplay(value);
-
-
 
 					channelSettingsArr[selectedChannel].fxFilter = dial1Value;
 					channelSettingsArr[selectedChannel].fxFilterType = filtType;
@@ -1980,7 +1520,6 @@ var dialFunction = function(dialNumber){
 
 				 var filterRes = dial2Value/100;
 
-				 console.log("filterRes: "+filterRes);
 				 channelSettingsArr[selectedChannel].fxFilterRes = filterRes;
 				 channelSettingsArr[selectedChannel].fxResonance = dial2Value;
 
@@ -1994,7 +1533,6 @@ var dialFunction = function(dialNumber){
 				segDispLockTimer = setTimeout(segmentDisplayLockFunc,3000);
 
 				channelSettingsArr[selectedChannel].fxTrim = dial1Value;
-				console.log(dial1Value);
 
 				dial1Value=Math.min(999,dial1Value);
 				updateSegmentDisplay(dial1Value);
@@ -2009,7 +1547,6 @@ var dialFunction = function(dialNumber){
 				segDispLockTimer = setTimeout(segmentDisplayLockFunc,3000);
 
 				channelSettingsArr[selectedChannel].fxLength = dial2Value;
-				console.log(dial2Value);
 
 				dial2Value=Math.min(999,dial2Value);
 				updateSegmentDisplay(dial2Value);
@@ -2038,120 +1575,119 @@ var updateSegmentDisplay = function(value){
 document.onkeydown = checkKey;
 function checkKey(e) {
     var event = window.event ? window.event : e;
-    //console.log(event.keyCode)
     switch(event.keyCode){
     	case 13://Return
-    		console.log("Return");
+    		// console.log("Return");
     		playButtonFunction();
     		break;
 
     		case 56://FX
-    		console.log("FX");
+    		// console.log("FX");
     		fxButtonFunction();
     		break;
 
     		case 57://WRITE
-    		console.log("Write");
+    		// console.log("Write");
     		writeButtonFunction();
     		break;
 
     	case 53://5
-    		console.log("5");
+    		// console.log("5");
     		soundButtonFunction();
     		break;
 
 		case 54://6
-    		console.log("6");
+    		// console.log("6");
     		patternButtonFunction();
     		break;555
 
 		case 55://7
-    		console.log("7");
+    		// console.log("7");
     		tempoButtonFunction();
     		break;
 
 
     	case 49://1
     		buttonFunction(1);
-    		console.log("1");
+    		// console.log("1");
     		break;
 
 		case 50://2
 		buttonFunction(2);
-    		console.log("2");
+    		// console.log("2");
     		break;
 
 		case 51://3
 		buttonFunction(3);
-    		console.log("3");
+    		// console.log("3");
     		break;
 
 		case 52://4
 		buttonFunction(4);
-    		console.log("4");
+    		// console.log("4");
     		break;
 
 		case 81://Q
 		//test.triggerAttackExt(noteArray[1],"+0",1,0,1);
 
 		buttonFunction(5);
-    		console.log("Q");
+    		// console.log("Q");
     		break;
 
 		case 87://W
 		buttonFunction(6);
-    		console.log("W");
+    		// console.log("W");
     		break;
 
     	case 69://E
     	buttonFunction(7);
-    		console.log("E");
+    		// console.log("E");
     		break;
 
 		case 82://Q
 		buttonFunction(8);
-    		console.log("R");
+    		// console.log("R");
     		break;
 
 
 		case 65://A
 		buttonFunction(9);
-    		console.log("A");
+    		// console.log("A");
     		break;
 
 		case 83://S
 		buttonFunction(10);
-    		console.log("S");
+    		// console.log("S");
     		break;
 
     		case 68://Q
     		buttonFunction(11);
-    		console.log("D");
+    		// console.log("D");
     		break;
 
     		case 70://Q
     		buttonFunction(12);
-    		console.log("F");
+    		// console.log("F");
     		break;
 
     		case 90://Q
     		buttonFunction(13);
-    		console.log("Z");
+    		// console.log("Z");
     		break;
 
     		case 88://Q
     		buttonFunction(14);
-    		console.log("X");
+    		// console.log("X");
     		break;
 
     		case 67://Q
     		buttonFunction(15);
-    		console.log("C");
+    		// console.log("C");
     		break;
 
     		case 86://Q
     		buttonFunction(16);
-    		console.log("V");
+    		// console.log("V");
     		break;
 
     }
