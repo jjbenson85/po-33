@@ -4,7 +4,6 @@ const PATTERNS = 16;
 const BEATS = 16;
 const BTNLEDS = 16;
 
-
 //VARIABLES
 //IS THE SONG PLAYING?
 var play = false;
@@ -79,10 +78,6 @@ var state = 0;
 0 = play
 1 = SOUND SELECT
 */
-
-
-
-
 
 
 //USED FOR NOTE PITCH PLAYBACK SPEED CONVERSION
@@ -175,14 +170,6 @@ for (var i = 0; i <CHANNELS;i++ ){
 }*/
 //var meter = new Tone.Meter (0.01);
 
-var test = new Tone.SamplerExt({
-		"C#4":"wav/sound-9-1.wav"
-	});
-
-	test.toMaster();
-
-
-
 const MELODIC_CHANNELS = 8;
 var melodicArr = new Array (MELODIC_CHANNELS);
 var melodicFilterArr = new Array (MELODIC_CHANNELS);
@@ -195,8 +182,6 @@ for (var i = 0; i <MELODIC_CHANNELS-4;i++ ){
 
 	melodicFilterArr[i] = new Tone.Filter(20, "highpass");
 	melodicFilterArr[i].toMaster();
-	//melodicFilterArr[i].fan(meter).toMaster();
-
 	melodicArr[i].connect(melodicFilterArr[i]);
 }
 
@@ -209,9 +194,6 @@ for (var i = 0; i <DRUM_CHANNELS-4;i++ ){
 	var x= i+9;
 	drumFilterArr[i]  = new Tone.Filter(20, "highpass");
 	drumFilterArr[i].toMaster();
-	//drumFilterArr[i].fan(meter).toMaster();
-
-
 	drumArr[i]= new Tone.Players({
 			"G#4" : "wav/sound-"+x+"-1.wav",
 			"A4" :"wav/sound-"+x+"-2.wav",
@@ -230,9 +212,6 @@ for (var i = 0; i <DRUM_CHANNELS-4;i++ ){
 			"E3" :  "wav/sound-"+x+"-15.wav",
 			"F#3" :  "wav/sound-"+x+"-16.wav"
 
-		}, {
-			//"volume" : -10,
-			//"fadeOut" : "64n",
 		});
 	drumArr[i].connect(drumFilterArr[i]);
 }
@@ -273,7 +252,6 @@ var keys = new Tone.Players({
 		var noteArray = ["G#4","A4","B4","C5","C#4","D#4","E4","F#4","G#3","A3","B3","C4","C#3","D#3","E3","F#3"];
 
 		//TONE.JS SEQUENCE USED TO LOOP AND TRIGGER EVENTS ACCURATELY
-		console.log('loop')
 		var loop = new Tone.Sequence(function(time, beat){
 			console.log('beat')
 			beatCount = beat;
@@ -381,7 +359,6 @@ var keys = new Tone.Players({
 
 
 		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
-		console.log('loop', loop)
 
 
 	/*
@@ -438,7 +415,7 @@ for (var i = 0; i <newChannelArr.length;i++ ){
 var loadDefault = function(){
 		//LOAD DEAFULT PATTERNS AND INSERT DATA INTO CHANNEL ARRAY
 		 $.getJSON("json/default.json", function( data ) {
-		   console.log(data);
+		//    console.log(data);
 		 	for(pattern in data){
 			 	for (channel in data[pattern]){
 					for(i=0;i<16;i++){
@@ -466,7 +443,7 @@ var loadDefault = function(){
  			//console.log(myJSON);
 	});
 }
-
+loadDefault();
 /*
  //console.log(newChannelArr);
  var myJSON = JSON.stringify(newChannelArr, null, "  ");
@@ -492,17 +469,17 @@ localStorage.setItem("po33_settings", myJSON);
 // loadDefault();
 
 
-var tempText = localStorage.getItem("po33_settings");
-var tempArray = JSON.parse(tempText);
+// var tempText = localStorage.getItem("po33_settings");
+// var tempArray = JSON.parse(tempText);
 
 
-if(tempText=="null"){
-	loadDefault();
+// if(tempText=="null"){
+// 	loadDefault();
 
-}else{
-	console.log("load local");
-	newChannelArr = JSON.parse(tempText);
-	console.log(newChannelArr);
+// }else{
+// 	console.log("load local");
+// 	newChannelArr = JSON.parse(tempText);
+// 	console.log(newChannelArr);
 /*
 	for(pattern in data){
 		for (channel in data[pattern]){
@@ -526,7 +503,7 @@ if(tempText=="null"){
 
 	//console.log(newChannelArr[1][0][0]);*/
 
-}
+// }
 
 
 //CURRENT CHANNEL SETTINGS USED FOR LIVE PLAY BACK AND ADDING NOTES
@@ -718,12 +695,18 @@ var segmentDisplayLockFunc = function(){
 	screenTimeOut();
   }
 
+var allowSound = function(){
+	melodicArr[0].volume.value = -100;
+	melodicArr[0].triggerAttack(noteArray[0]);
+}
 
 //PLAY BUTTON
   $("#btnPlay").click(function() {
 	  console.log('"#btnPlay"')
    playButtonFunction();
   });
+
+
 
 var playButtonFunction = function(){
 	 if(play){

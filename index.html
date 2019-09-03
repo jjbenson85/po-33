@@ -358,14 +358,11 @@
 			</div>
 			<div id="melodic" class="sideLabels">
 				MELODIC
-				
-
 			</div>
 			<div id="melodicBG"></div>
 			<div id="melodicLines" class="sideLabelLines"></div>
 			<div id="drum" class="sideLabels">
 				DRUM
-				
 			</div>
 			<div id="drumBG"></div>
 			<div id ="drumLines"class="sideLabelLines"></div>
@@ -375,19 +372,20 @@
 	  <nav>
 	  	<h1>HOW TO PLAY ME!</h1>
 	  	<ol>
+			<li>Click this button to <button onclick="allowSound()">Allow Sound</button></li>
 	  		<li>Press <button onclick="playButtonFunction()"> PLAY </button> to start playing!</li>
 	  		<li>Press <button onclick="patternButtonFunction()"> PATTERN </button>, this will act like you are holding down the button.</li>
 	  		<li>Press a <button>NUMBER</button> button to select a new pattern.</li>
-		  	<li>Press another nunber button to add that pattern to the current song.</li>
+		  	<li>Press another number button to add that pattern to the current song.</li>
 		  	<li>Press <button onclick="patternButtonFunction()"> PATTERN </button> to leave pattern select mode.</li>
 		  	<li>Press <button onclick="playButtonFunction()"> PLAY </button> to stop.</li>
-		  	<li>Press any <em> NUMBER </em> button to play the currently selected sound.</li>
-		  	<li>Press <button onclick="soundButtonFunction()">SOUND</button> then any <em>NUMBER</em> button to select a new sound.</li>
+		  	<li>Press any <button>NUMBER</button> button to play the currently selected sound.</li>
+		  	<li>Press <button onclick="soundButtonFunction()">SOUND</button> then any <button>NUMBER</button> button to select a new sound.</li>
 		  	<li>Select an empty pattern.</li>
 		  	<li>Press <button onclick="writeButtonFunction()">WRITE</button> to enter mode.</li>
 		  	<li>By pressing any <button>NUMBER</button> button, you add the current sound to that beat.</li>
-		  	<li>To change the pitch or sample, return to performance mode by pressing <button onclick="writeButtonFunction()">WRITE</button>, then press any number key.</li>
-	 </ol>
+		  	<li>To change the pitch or sample, return to performance mode by pressing <button onclick="writeButtonFunction()">WRITE</button>, then press any <button>NUMBER</button> key.</li>
+	 	</ol>
 	<!--<div>Timer: <span id = "timer">0</span></div>
 		<div>Time Error: <span id = "errorDisp">0</span></div>
 		<div>Target Interval: <span id = "intervalDisp">0</span></div>
