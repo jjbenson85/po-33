@@ -1,0 +1,48 @@
+TODO
+
+
+
+
+beautify lcd
+silver legs
+glass border
+shadow
+stand
+
+dial pointers
+
+lock tab
+
+embed fonts?
+
+update clock every minute
+
+button legs
+
+
+//double click BPM
+//disco, hip-hop, tencho
+
+//make sound play instantly
+
+
+//filter fx
+
+
+//play sound with pattern volume
+
+//main volume
+
+//pattern chain
+
+//record live!
+
+//highlight note of same pitch
+
+play sound for stored length
+
+segment display shows level
+
+record with mic in
+
+COPY PATTERN PROPERLY

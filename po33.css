@@ -1,0 +1,545 @@
+body {
+		background-color: white;
+	}
+
+	@font-face {
+    font-family: "DSEG7Classic-Regular";
+    src: url("font/DSEG7Classic-Regular.ttf") format("truetype");
+	}
+
+	nav {
+		//display: flex;
+
+	}
+
+	h1 {
+		margin: 10px 50px;
+	}
+
+	#headerRight{
+		font-family: 'Delius Unicase', cursive;
+		margin:8px 8px;
+		color:orange;
+	}
+
+	#headerLeft{
+		font-family: 'Alegreya Sans', sans-serif;
+		margin:8px 8px;
+		color:orange;
+
+	}
+
+	.circuitBoard {
+		margin: 0 auto ;
+		background-color: #333333;
+		width: 320px;
+		height: 550px;
+		border-radius: 10px;
+	}
+	.head {
+		display: flex;
+ 		flex-direction: row;
+    	justify-content: space-between ;
+  		align-items: center;
+  		height: 70px;
+	}
+
+	.lcd {
+		width:280px; 
+		height: 130px;
+		background-color: #555555;
+		margin: 0 auto;
+		padding: 0px;
+		/*display: flex;
+ 		flex-direction: row;
+    	justify-content: space-between ;*/
+    	display: grid;
+    	 grid-template-columns: 1fr 1fr 1fr 20px 1fr 1fr;
+ 		 grid-template-rows: auto;
+  		grid-template-areas: 
+    	"hiphop disco lcdKO editSymbol segmentDisplay ampm"
+   		 "tencho . lcdKO editSymbol segmentDisplay ampm"
+   		 ". . . . . . "
+
+    	"levelMeter levelMeter levelMeter levelMeter levelMeter levelMeter";
+
+	}
+
+	.bpmPreset {
+		grid-area: bpmPre;
+		display: grid;
+    	grid-template-columns: 1fr 1fr;
+ 		grid-template-rows: auto;
+  		grid-template-areas: 
+  		"hiphop disco"
+  		"tencho ."
+	}
+
+	#hiphop {
+		grid-area: hiphop;
+		font-size: 9px;
+		font-weight: 900;
+		margin: 2px 2px;
+		opacity: 0;
+		
+
+	}
+
+	#disco {
+		grid-area: disco;
+		font-size: 9px;
+		font-weight: 900;
+		margin: 2px 2px;
+		opacity: 0;
+
+
+
+		
+	}
+
+	#tencho {
+		grid-area: tencho;
+		font-size: 9px;
+		font-weight: 900;
+		margin: 2px 2px;
+		opacity: 0;
+
+font-family: 'Delius Unicase', cursive;
+
+	
+	}
+
+
+	.lcdKO {
+		grid-area: lcdKO;
+		
+		font-size: 24px;
+
+
+	}
+
+	.editSymbol{
+		grid-area: editSymbol;
+	}
+	.segmentDisplay {
+		 font-family: "DSEG7Classic-Regular";
+		 grid-area: segmentDisplay;
+	}
+	.ampm {
+		grid-area: ampm;
+	}
+
+	#am {
+		//background-color: #555555;
+		color: #000000;
+		font-size: 12px;
+		margin: -2px 2px 1px 2px ;
+	}
+
+	#pm {
+		color: #555555;
+		background-color: #000000;
+		border-radius: 4px;
+		//padding:0;
+		font-size: 12px;
+		margin: -2px 2px 1px 2px ;
+		width:18px;
+		height: 11px;
+		line-height: 10px;
+	}
+
+	.levelMeter{
+		grid-area: levelMeter;	
+		display: flex;
+		margin: 80px 25px;
+		
+
+	}
+
+	.levelMeterSegment {
+		height:10px;
+		width:5px;
+		background-color: #000000;
+		margin: 1px;
+		border-radius: 2px;
+
+
+		
+	}
+
+	.buttonGrid {
+		display: grid;
+ 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+ 		grid-template-rows:  65px 65px 65px 65px 65px;
+ 		position: relative;
+		width:300px;
+		height:370px;
+		top:-370px;
+		margin: 0 auto;
+	}
+
+	.gridHover {
+		position:absolute;
+
+		display: flex;
+		height: 50px;
+		width: 50px;
+		justify-content: center;
+		border: 5px solid rgba(255, 0, 0, 1);
+		border-radius: 5px;
+		transition: opacity 0.5s;
+		top:0px;
+		z-index: 4;
+		opacity:0;
+	}
+
+	.buttonHold {
+		opacity: 0.5;
+		transition: opacity 0.1s;
+	}
+
+	.gridHover:hover {
+		opacity: 0.8;
+		transition: opacity 0.1s;
+		animation: hoverGlow 1s linear infinite;
+	}
+
+	@keyframes hoverGlow {
+		
+	  50% {
+	  	//background-color: #FF5555;
+		 box-shadow: 0px 0px 4px 2px #FF0000;		
+	  }
+	}
+
+	.buttonGridItem {
+		position:relative;
+
+		display: flex;
+		height: 50px;
+		width: 50px;
+		justify-content: center;
+		border: 5px solid rgba(255, 0, 0, 0);
+		border-radius: 5px;
+		transition: border 0.5s;
+		//z-index: 3;
+
+
+	}
+
+	/*.buttonGridItem:hover {
+		border: 5px solid rgba(255, 0, 0, .5);
+		transition: border 0.1s;
+		//z-index: 3;
+
+
+	}*/
+
+	
+	.buttonBG {
+		position: absolute;
+		width:40px;
+		height:40px;
+		border-radius: 25px;
+		background-color: white;
+	}
+
+	.square {
+		position: relative;
+		top:50%;
+		left:50%;
+		width: 30px;
+		height: 30px;
+		margin:-15px 0 0 -15px;
+		background-color:rgba(96,96,96,1);
+		box-shadow: 4px 4px 4px 2px rgba(0,0,0,0.5);
+		
+
+	}
+
+	.circle {
+		position: absolute;
+		top:50%;
+		left:50%;
+		width: 16px;
+		height: 16px;
+		margin:-8px 0 0 -8px;
+		border-radius: 15px;
+		background-color:black;
+		box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.5);
+	}
+	.btnText {
+		position: relative;
+		color: white;
+		top: 40px;
+		font-size: 12px;
+		text-align: center;
+	}
+	.dialBG {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		top: 0px;
+		left: 0px;
+		width:50px;
+		height:50px;
+		border-radius: 5px;
+		background-color:rgba(96,96,96,1);
+		box-shadow: 4px 4px 4px 2px rgba(0,0,0,0.5);
+
+	}
+
+	.dot {
+		position: absolute;
+		height:6px;
+		width: 6px;
+		border-radius: 3px;
+		background-color: #222222;
+	}
+
+	.dot1{
+		left:4px;
+		top:4px;
+	}
+
+	.dot2 {
+		left:40px;
+		top:40px;
+	}
+
+	.dialCircle {
+		position: absolute;
+		top:50%;
+		left:50%;
+		margin:-15px 0 0 -15px;
+		height:30px;
+		width:30px;
+
+		border-radius: 15px;
+		background-color: black;
+		box-shadow: 8px 8px 4px 4px rgba(0,0,0,0.5);
+
+	}
+	.dialRotate {
+		position: absolute;
+		top:50%;
+		left:50%;
+		margin:-14px 0 0 -14px;
+		display: flex;
+		justify-content: center;
+		align-items: top;
+		height:28px;
+		width:28px;
+		border-radius: 15px;
+		background-color: #444466;
+		//box-shadow: 4px 4px 4px 2px rgba(0,0,0,0.5);
+
+	}
+	.dialPointer {
+		margin: -4px 0 0 0 ;
+	}
+
+	.soundBtn > .buttonBG {
+		background-color: orange;
+	}
+	.soundBtn > .btnText {
+		color: orange;
+	}
+
+	#btnRecord >  .buttonBG{
+		background-color: orange;
+	}
+	#btnRecord> .btnText{
+		background-color: orange;
+		color:#333333;
+		border-radius: 15px;
+		height: 1em;
+		padding: 0 3px 0 3px;
+	}
+	.fxBtn >   .buttonBG{
+		background: repeating-linear-gradient(
+		  -45deg,
+		  #FFFFFF,
+		  #FFFFFF 2px,
+		  #333333 2px,
+		  #333333 4px
+		);
+	}
+	.writeBtn >   .buttonBG{
+		background: repeating-linear-gradient(
+		  -45deg,
+		  #FFFFFF,
+		  #FFFFFF 2px,
+		  #333333 2px,
+		  #333333 4px
+		);
+	}
+
+	.btnNumber > .btnText {
+		font-size: 15px;
+		font-family: "arial";
+		font
+	}
+
+	.koLabel{
+		position: relative;
+		left: 20px;
+
+	}
+
+	.koItalicLabel {
+		position: relative;
+		//top:-24px;
+		left: 20px;
+		transform: rotate(20deg);
+
+	}
+
+	.koLabelContainer{
+		display: flex;
+		justify-content: space-between ;
+  		align-items: center;
+  		font-family: 'Alegreya Sans', sans-serif;
+		height:35px;
+		color: orange;
+		font-size: 25px;
+	}
+
+	#logo {
+		position:relative;
+		top:-40px;
+		left:30px;
+	}
+
+	#microphone {
+		position:relative;
+		top:-18px;
+		left:15px;
+		height:120px;
+	}
+	
+	
+	.led {
+		position: relative;
+		display: none;
+		background-color: rgba(32,32,32,1);
+		margin: -7px 0 -18px 10px;
+		height:10px;
+		width:20px;
+		top:0px;
+		left:0px;
+	}
+
+	.btnNumber > .buttonBG > .led {
+		display: block;
+	}
+
+	.btnPlay > .buttonBG > .led {
+		//background-color: blue;
+	}
+
+	#btnPlayLED {
+		display: block;
+		//background-color: blue;
+	}
+
+	.ledOnHalf {
+		background-color: #FF5555;
+		box-shadow: 0px 0px 20px 5px #550000;
+	}
+
+	.ledOnFull {
+		background-color: #FF5555;
+		 box-shadow: 0px 0px 20px 10px #FF0000;
+
+	}
+
+	.ledFlash {
+
+  		animation: blinker 0.33s step-start infinite;
+
+	}
+
+	
+	@keyframes blinker {
+		
+	  50% {
+	  	background-color: #FF5555;
+		 box-shadow: 0px 0px 20px 10px #FF0000;		
+	  }
+	}
+
+	.sideLabels{
+		position: relative;
+		color: orange;
+		font-size: 10px;
+		text-align: center;
+		transform: rotate(-90deg);
+		//left:-150px;
+
+	}
+
+	.sideLabelLines{
+		position: relative;
+		border: solid 2px orange;
+		border-right-style: none;
+		left:-150px;
+
+		width:5px;
+		height:58px;
+	}
+
+	
+	#melodicLines{
+		position: relative;
+		top:-710px;
+		left:10px;
+		z-index: 0;
+	}
+	#melodic{
+		position: relative;
+		left:-150px;
+		top:-625px;
+		z-index: 2;
+
+
+	}
+	#melodicBG{
+
+		background-color:#333333;
+		position: relative;
+		left:0px;
+		top:-655px;
+		width: 18px;
+		height: 48px;
+		z-index: 1;
+	}
+
+	#drum{
+		position: relative;
+		left:-150px;
+		top:-615px;
+		z-index: 2;
+
+
+	}
+
+	#drumBG{
+		background-color:#333333;
+		position: relative;
+		left:0px;
+		top:-638px;
+		width: 18px;
+		height: 34px;
+		z-index: 1;
+
+	}
+
+	
+#drumLines{
+		position: relative;
+		top:-685px;
+		left:10px;
+		z-index: 0;
+	}
+	
