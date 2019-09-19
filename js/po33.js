@@ -317,7 +317,7 @@ var keys = new Tone.Players({
 						var pitch = thisChannel.fxPitch;
 						var gain = thisChannel.fxVolume;
 
-						thisSampler.get(noteArray[thisPitch]).start(time, offset, duration, pitch, gain);
+						thisSampler.get(noteArray[thisPitch]).start(time);
 					}
 
 			}
@@ -380,7 +380,6 @@ for (var i = 0; i <newChannelArr.length;i++ ){
 		}
 	}
 }
-
 
 var loadDefault = function(){
 		//LOAD DEAFULT PATTERNS AND INSERT DATA INTO CHANNEL ARRAY
